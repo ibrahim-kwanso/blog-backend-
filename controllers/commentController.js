@@ -13,12 +13,13 @@ exports.createComment = async (req, res) => {
 exports.getComment = async (req, res) => {
   try {
     const comment = await Comment.findByPk(req.params.id);
-    if (comment) {
-      res.status(statusCodes.SUCCESS).json(comment);
-    } else {
-      res.status(statusCodes.NOT_FOUND).json({ error: "Comment not found" });
-    }
+
+    if (!comment)
+      return res.status(statusCodes.NOT_FOUND).json({ error: "Comment not found" });
+
+    return res.status(statusCodes.SUCCESS).json(comment);
+    
   } catch (error) {
-    res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
+    return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };

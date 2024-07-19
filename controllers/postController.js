@@ -3,7 +3,7 @@ const statusCodes = require("../constants/statusCodes");
 
 exports.createPost = async (req, res) => {
   try {
-    const post = await Post.create({userID: req.user.userID, ...req.body});
+    const post = await Post.create({ userID: req.user.userID, ...req.body });
     res.status(statusCodes.CREATED).json(post);
   } catch (error) {
     res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
@@ -13,13 +13,15 @@ exports.createPost = async (req, res) => {
 exports.getPost = async (req, res) => {
   try {
     const post = await Post.findByPk(req.params.id);
-    if (post) {
-      res.status(statusCodes.SUCCESS).json(post);
-    } else {
-      res.status(statusCodes.NOT_FOUND).json({ error: "Post not found" });
-    }
+
+    if (!post)
+      return res
+        .status(statusCodes.NOT_FOUND)
+        .json({ error: "Post not found" });
+
+    return res.status(statusCodes.SUCCESS).json(post);
   } catch (error) {
-    res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
+    return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };
 
@@ -30,12 +32,13 @@ exports.getPostByUser = async (req, res) => {
         userID: req.user.userID,
       },
     });
-    if (posts) {
-      res.status(statusCodes.SUCCESS).json(posts);
-    } else {
-      res.status(statusCodes.NOT_FOUND).json({ error: "Posts not found" });
-    }
+
+    if (!posts)
+      return res.status(statusCodes.NOT_FOUND).json({ error: "Posts not found" });
+
+    return res.status(statusCodes.SUCCESS).json(posts);
+
   } catch (error) {
-    res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
+    return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };

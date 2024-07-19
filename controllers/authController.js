@@ -13,16 +13,30 @@ exports.signin = async (req, res) => {
       },
     });
 
-    if (user) {
-      const token = jwt.sign(
-        { userID: user.userID, email: user.email },
-        SECRET_KEY
-      );
-      res.status(statusCodes.SUCCESS).json(token);
-    } else {
-      res.status(statusCodes.NOT_FOUND).json({ error: "User not found" });
-    }
+    if (!user)
+      return res.status(statusCodes.NOT_FOUND).json({ error: "User not found" });
+
+    const token = jwt.sign(
+      { userID: user.userID, email: user.email },
+      SECRET_KEY
+    );
+    return res.status(statusCodes.SUCCESS).json(token);
+
   } catch (error) {
-    res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
+    return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
+  }
+};
+
+exports.signup = async (req, res) => {
+  try {
+    const user = await User.create(req.body);
+    const token = jwt.sign(
+      { userID: user.userID, email: user.email },
+      SECRET_KEY
+    );
+
+    return res.status(statusCodes.SUCCESS).json(token);
+  } catch (error) {
+    return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };
