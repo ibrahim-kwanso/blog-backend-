@@ -1,18 +1,24 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const config = require('../config/config.json').development;
+const { Sequelize, DataTypes } = require("sequelize");
+const config = require("../config/config.json").development;
 
-const sequelize = new Sequelize(config.database, config.username, config.password, {
-  host: config.host,
-  dialect: config.dialect
-});
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: config.host,
+    dialect: config.dialect,
+  }
+);
 
 const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-db.User = require('./user')(sequelize, DataTypes);
-db.Post = require('./post')(sequelize, DataTypes);
+db.User = require("./user")(sequelize, DataTypes);
+db.Post = require("./post")(sequelize, DataTypes);
+db.Comment = require("./comment")(sequelize, DataTypes);
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
