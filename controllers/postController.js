@@ -3,7 +3,7 @@ const statusCodes = require("../constants/statusCodes");
 
 exports.createPost = async (req, res) => {
   try {
-    const post = await Post.create(req.body);
+    const post = await Post.create({userID: req.user.userID, ...req.body});
     res.status(statusCodes.CREATED).json(post);
   } catch (error) {
     res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
@@ -27,7 +27,7 @@ exports.getPostByUser = async (req, res) => {
   try {
     const posts = await Post.findAll({
       where: {
-        userID: req.params.id,
+        userID: req.user.userID,
       },
     });
     if (posts) {
