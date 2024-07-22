@@ -1,7 +1,7 @@
 const { Post, Comment } = require("../models");
 const statusCodes = require("../constants/statusCodes");
 const { Op } = require("sequelize");
-const {appendReplies} = require('../helper')
+const { appendReplies, applyPagination } = require("../helper");
 
 exports.createPost = async (req, res) => {
   try {
@@ -14,7 +14,9 @@ exports.createPost = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
   try {
-    const { title, page, pageSize } = req.body;
+    const title = req.query.title;
+    const page = parseInt(req.query.page);
+    const pageSize = parseInt(req.query.pageSize);
     const query = {
       limit: pageSize,
       offset: (page - 1) * pageSize,
@@ -22,8 +24,10 @@ exports.getAllPosts = async (req, res) => {
 
     if (title) query.where = { title: { [Op.like]: `%${title}%` } };
 
-    const posts = await Post.findAll(query);
-    return res.status(statusCodes.SUCCESS).json(posts);
+    const { count: totalItems, rows: posts } = await Post.findAndCountAll(
+      query
+    );
+    return res.status(statusCodes.SUCCESS).json(applyPagination(req, posts, page, pageSize, totalItems));
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
@@ -39,17 +43,16 @@ exports.getCommentsByPost = async (req, res) => {
       // limit: pageSize,
       // offset: (page - 1) * pageSize,
     });
-    const plainComments = comments.map(comment => comment.toJSON());
+    const plainComments = comments.map((comment) => comment.toJSON());
     return res.status(statusCodes.SUCCESS).json(appendReplies(plainComments));
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };
 
-
 exports.getPost = async (req, res) => {
   try {
-    console.log("Heee")
+    console.log("Heee");
     const post = await Post.findByPk(req.params.id);
 
     if (!post)
@@ -65,26 +68,27 @@ exports.getPost = async (req, res) => {
 
 exports.updatePost = async (req, res) => {
   try {
-    const {title, content} = req.body;
+    const { title, content } = req.body;
     const updateData = {};
-    if(title) updateData.title = title;
-    if(content) updateData.content = content;
+    if (title) updateData.title = title;
+    if (content) updateData.content = content;
 
     const [updated] = await Post.update(updateData, {
-      where:{
-        postID: req.params.id
-      }
-    })
+      where: {
+        postID: req.params.id,
+      },
+    });
 
-    if(!updated)
-      return res.status(statusCodes.NOT_FOUND).json({error: 'Post not found'});
+    if (!updated)
+      return res
+        .status(statusCodes.NOT_FOUND)
+        .json({ error: "Post not found" });
 
     return res.status(statusCodes.SUCCESS).json(updated);
-
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
-}
+};
 
 exports.deletePost = async (req, res) => {
   try {
@@ -103,4 +107,4 @@ exports.deletePost = async (req, res) => {
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
-}
+};

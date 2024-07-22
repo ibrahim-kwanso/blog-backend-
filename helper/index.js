@@ -10,7 +10,7 @@ exports.appendReplies = (comments) => {
   });
 
   comments.forEach((comment) => {
-    if (comment.parentID === null) {
+    if (comment.parentID == null) {
       roots.push(map[comment.commentID]);
     } else {
       if (map[comment.parentID]) {
@@ -20,4 +20,25 @@ exports.appendReplies = (comments) => {
   });
 
   return roots;
+};
+
+exports.applyPagination = (req, data, page, pageSize, totalItems) => {
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const currentPage = page;
+  const nextPage = page < totalPages ? page + 1 : null;
+
+  const nextUrl = nextPage
+    ? `${req.protocol}://${req.get('host')}${req.originalUrl.split('?').shift()}?page=${nextPage}&pageSize=${pageSize}`
+    : null;
+
+  return {
+    data,
+    pagination: {
+      totalItems,
+      totalPages,
+      currentPage,
+      pageSize,
+      nextUrl
+    }
+  };
 };

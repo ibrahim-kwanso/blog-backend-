@@ -1,7 +1,6 @@
 const { User, Post, Comment } = require("../models");
 const statusCodes = require("../constants/statusCodes");
-const { where } = require("sequelize");
-const { appendReplies } = require("../helper");
+const { appendReplies, applyPagination } = require("../helper");
 
 exports.createUser = async (req, res) => {
   try {
@@ -14,7 +13,9 @@ exports.createUser = async (req, res) => {
 
 exports.getPostByUser = async (req, res) => {
   try {
-    const posts = await Post.findAll({
+    const page = parseInt(req.query.page);
+    const pageSize = parseInt(req.query.pageSize);
+    const { count: totalItems, rows: posts } = await Post.findAndCountAll({
       where: {
         userID: req.params.id,
       },
@@ -32,6 +33,8 @@ exports.getPostByUser = async (req, res) => {
           ],
         },
       ],
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
     });
 
     const plainPosts = posts.map((post) => post.toJSON());
@@ -39,7 +42,9 @@ exports.getPostByUser = async (req, res) => {
       post.Comments = appendReplies(post.Comments);
     });
 
-    return res.status(statusCodes.SUCCESS).json(plainPosts);
+    return res
+      .status(statusCodes.SUCCESS)
+      .json(applyPagination(req, plainPosts, page, pageSize, totalItems));
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
@@ -77,27 +82,28 @@ exports.getAllUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const {email, password, username} = req.body;
+    const { email, password, username } = req.body;
     const updateData = {};
-    if(username) updateData.username = username;
-    if(email) updateData.email = email;
-    if(password) updateData.password = password;
+    if (username) updateData.username = username;
+    if (email) updateData.email = email;
+    if (password) updateData.password = password;
 
     const [updated] = await User.update(updateData, {
-      where:{
-        userID: req.params.id
-      }
-    })
+      where: {
+        userID: req.params.id,
+      },
+    });
 
-    if(!updated)
-      return res.status(statusCodes.NOT_FOUND).json({error: 'User not found'});
+    if (!updated)
+      return res
+        .status(statusCodes.NOT_FOUND)
+        .json({ error: "User not found" });
 
     return res.status(statusCodes.SUCCESS).json(updated);
-
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
-}
+};
 
 exports.deleteUser = async (req, res) => {
   try {
