@@ -18,6 +18,10 @@ app.use("/posts", authenticateToken, postRoutes);
 app.use("/comments", authenticateToken, commentRoutes);
 app.use("/auth", authRoutes);
 
+app.get("/", (req, res)=>{
+  res.send("Hello World");
+})
+
 const dbSync = async () => {
   try {
     await sequelize.sync();
