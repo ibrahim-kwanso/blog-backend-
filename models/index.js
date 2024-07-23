@@ -6,10 +6,14 @@ const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(path.resolve(__dirname + "/../config/config.json"))[env];
+const config = require(path.resolve(__dirname + "/../config/config.js"))[env];
 const db = {};
 
-if(!config) throw new Error(`cannot read from: ${path.resolve(__dirname + "/../config/config.json")}`);
+if(!config){
+  console.log(config)
+  throw new Error(`cannot read from: ${path.resolve(__dirname + "/../config/config.js")}`);
+} 
+  
 
 let sequelize;
 if (config.use_env_variable) {

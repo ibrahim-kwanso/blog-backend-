@@ -1,4 +1,4 @@
-{
+module.exports = {
   "development": {
     "username": "postgres",
     "password": "12345678",
