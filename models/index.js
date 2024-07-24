@@ -9,7 +9,11 @@ const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
-  config
+  {
+    host: config.host,
+    dialect: config.dialect,
+    dialectModule: require('pg')
+  }
 );
 
 db.User = require("./user")(sequelize, DataTypes);
