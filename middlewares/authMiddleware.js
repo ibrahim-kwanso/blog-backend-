@@ -15,7 +15,6 @@ module.exports.authenticateToken = (req, res, next) => {
 
   jwt.verify(token, SECRET_KEY, (err, user) => {
     if (err) {
-      console.log(token);
       return res.status(statusCodes.FORBIDDEN).json({ error: err.message });
     }
 
