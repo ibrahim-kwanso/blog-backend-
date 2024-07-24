@@ -1,6 +1,6 @@
-module.exports = (sequelize, DataTypes) => {
+const commentModel = (sequelize, DataTypes) => {
   const Comment = sequelize.define("Comment", {
-    commentID: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: "Users",
-        key: "userID",
+        key: "id",
       },
     },
     postID: {
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: "Posts",
-        key: "postID",
+        key: "id",
       },
     },
     parentID: {
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       references: {
         model: "Comments",
-        key: "commentID",
+        key: "id",
       },
     },
   });
@@ -61,3 +61,5 @@ module.exports = (sequelize, DataTypes) => {
 
   return Comment;
 };
+
+export default commentModel;

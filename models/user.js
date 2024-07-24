@@ -1,6 +1,6 @@
-module.exports = (sequelize, DataTypes) => {
+const userModel = (sequelize, DataTypes) => {
   const User = sequelize.define("User", {
-    userID: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -37,3 +37,5 @@ module.exports = (sequelize, DataTypes) => {
 
   return User;
 };
+
+export default userModel;

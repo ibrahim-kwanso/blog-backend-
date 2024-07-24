@@ -1,8 +1,10 @@
-const { User, Post, Comment } = require("../models");
-const statusCodes = require("../constants/statusCodes");
-const { appendReplies, applyPagination } = require("../helper");
+import db from "../models/index.js";
+import statusCodes from "../constants/statusCodes.js";
+import { appendReplies, applyPagination } from "../helper/index.js";
 
-exports.createUser = async (req, res) => {
+const {User, Post, Comment} = db;
+
+const createUser = async (req, res) => {
   try {
     const user = await User.create(req.body);
     return res.status(statusCodes.CREATED).json(user);
@@ -11,19 +13,19 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.getPostByUser = async (req, res) => {
+const getPostByUser = async (req, res) => {
   try {
     const page = parseInt(req.query.page);
     const pageSize = parseInt(req.query.pageSize);
     const { count: totalItems, rows: posts } = await Post.findAndCountAll({
       where: {
-        userID: req.params.id,
+        id: req.params.id,
       },
       include: [
         {
           model: Comment,
           attributes: [
-            "commentID",
+            "id",
             "content",
             "userID",
             "postID",
@@ -50,7 +52,7 @@ exports.getPostByUser = async (req, res) => {
   }
 };
 
-exports.getUser = async (req, res) => {
+const getUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
 
@@ -65,7 +67,7 @@ exports.getUser = async (req, res) => {
   }
 };
 
-exports.getAllUser = async (req, res) => {
+const getAllUser = async (req, res) => {
   try {
     const allUsers = await User.findAll();
 
@@ -80,7 +82,7 @@ exports.getAllUser = async (req, res) => {
   }
 };
 
-exports.updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
     const { email, password, username } = req.body;
     const updateData = {};
@@ -90,7 +92,7 @@ exports.updateUser = async (req, res) => {
 
     const [updated] = await User.update(updateData, {
       where: {
-        userID: req.params.id,
+        id: req.params.id,
       },
     });
 
@@ -105,11 +107,11 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-exports.deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     const deletedUser = await User.destroy({
       where: {
-        userID: req.params.id,
+        id: req.params.id,
       },
     });
 
@@ -122,4 +124,13 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
+};
+
+export {
+  createUser,
+  getPostByUser,
+  getUser,
+  getAllUser,
+  updateUser,
+  deleteUser,
 };

@@ -1,14 +1,16 @@
-require("dotenv").config();
-const express = require("express");
-const bodyParser = require("body-parser");
-const userRoutes = require("./routes/userRoutes");
-const postRoutes = require("./routes/postRoutes");
-const commentRoutes = require("./routes/commentRoutes");
-const authRoutes = require("./routes/authRoutes");
-const { authenticateToken } = require("./middlewares/authMiddleware");
-const { sequelize } = require("./models");
+import dotenv from 'dotenv';
+import express from "express";
+import bodyParser from "body-parser";
+import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import { authenticateToken } from "./middlewares/authMiddleware.js";
+import db from "./models/index.js";
 
 const app = express();
+dotenv.config();
+
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
@@ -19,12 +21,12 @@ app.use("/comments", authenticateToken, commentRoutes);
 app.use("/auth", authRoutes);
 
 app.get("/", (req, res)=>{
-  res.send("Hello World");
+  res.send("Server Started, try /users");
 })
 
 const dbSync = async () => {
   try {
-    await sequelize.sync();
+    await db.sequelize.sync();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

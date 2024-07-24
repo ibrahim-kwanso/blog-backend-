@@ -1,18 +1,20 @@
-const { Post, Comment } = require("../models");
-const statusCodes = require("../constants/statusCodes");
-const { Op } = require("sequelize");
-const { appendReplies, applyPagination } = require("../helper");
+import db from "../models/index.js";
+import statusCodes from "../constants/statusCodes.js";
+import { Op } from "sequelize";
+import { appendReplies, applyPagination } from "../helper/index.js";
 
-exports.createPost = async (req, res) => {
+const { Post, Comment } = db;
+
+const createPost = async (req, res) => {
   try {
-    const post = await Post.create({ userID: req.user.userID, ...req.body });
+    const post = await Post.create({ userID: req.user.id, ...req.body });
     res.status(statusCodes.CREATED).json(post);
   } catch (error) {
     res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };
 
-exports.getAllPosts = async (req, res) => {
+const getAllPosts = async (req, res) => {
   try {
     const title = req.query.title;
     const page = parseInt(req.query.page);
@@ -33,7 +35,7 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-exports.getCommentsByPost = async (req, res) => {
+const getCommentsByPost = async (req, res) => {
   try {
     const { page, pageSize } = req.body;
     const comments = await Comment.findAll({
@@ -50,7 +52,7 @@ exports.getCommentsByPost = async (req, res) => {
   }
 };
 
-exports.getPost = async (req, res) => {
+const getPost = async (req, res) => {
   try {
     console.log("Heee");
     const post = await Post.findByPk(req.params.id);
@@ -66,7 +68,7 @@ exports.getPost = async (req, res) => {
   }
 };
 
-exports.updatePost = async (req, res) => {
+const updatePost = async (req, res) => {
   try {
     const { title, content } = req.body;
     const updateData = {};
@@ -75,7 +77,7 @@ exports.updatePost = async (req, res) => {
 
     const [updated] = await Post.update(updateData, {
       where: {
-        postID: req.params.id,
+        id: req.params.id,
       },
     });
 
@@ -90,11 +92,11 @@ exports.updatePost = async (req, res) => {
   }
 };
 
-exports.deletePost = async (req, res) => {
+const deletePost = async (req, res) => {
   try {
     const deletedPost = await Post.destroy({
       where: {
-        postID: req.params.id,
+        id: req.params.id,
       },
     });
 
@@ -108,3 +110,12 @@ exports.deletePost = async (req, res) => {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };
+
+export {
+  createPost,
+  getPost,
+  getAllPosts,
+  getCommentsByPost,
+  updatePost,
+  deletePost,
+}

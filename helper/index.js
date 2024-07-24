@@ -1,4 +1,4 @@
-exports.appendReplies = (comments) => {
+const appendReplies = (comments) => {
   const map = {};
   const roots = [];
 
@@ -22,7 +22,7 @@ exports.appendReplies = (comments) => {
   return roots;
 };
 
-exports.applyPagination = (req, data, page, pageSize, totalItems) => {
+const applyPagination = (req, data, page, pageSize, totalItems) => {
   const totalPages = Math.ceil(totalItems / pageSize);
   const currentPage = page;
   const nextPage = page < totalPages ? page + 1 : null;
@@ -42,3 +42,5 @@ exports.applyPagination = (req, data, page, pageSize, totalItems) => {
     }
   };
 };
+
+export {applyPagination, appendReplies}

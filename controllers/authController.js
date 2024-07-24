@@ -1,9 +1,14 @@
-const { User } = require("../models");
-const jwt = require("jsonwebtoken");
-const statusCodes = require("../constants/statusCodes");
-const SECRET_KEY = "VerySecret";
+import db from "../models/index.js";
+import dotenv from "dotenv";
+import statusCodes from "../constants/statusCodes.js";
+import jwt from "jsonwebtoken";
 
-exports.signin = async (req, res) => {
+dotenv.config();
+
+const { User } = db;
+const SECRET_KEY = process.env.SECRET_KEY || "VerySecret";
+
+const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({
@@ -19,7 +24,7 @@ exports.signin = async (req, res) => {
         .json({ error: "User not found" });
 
     const token = jwt.sign(
-      { userID: user.userID, email: user.email },
+      { id: user.id, email: user.email },
       SECRET_KEY
     );
     return res.status(statusCodes.SUCCESS).json(token);
@@ -28,11 +33,11 @@ exports.signin = async (req, res) => {
   }
 };
 
-exports.signup = async (req, res) => {
+const signup = async (req, res) => {
   try {
     const user = await User.create(req.body);
     const token = jwt.sign(
-      { userID: user.userID, email: user.email },
+      { id: user.id, email: user.email },
       SECRET_KEY
     );
 
@@ -41,3 +46,5 @@ exports.signup = async (req, res) => {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
 };
+
+export { signin, signup };
