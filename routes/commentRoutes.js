@@ -5,7 +5,7 @@ import {
   getAllComments,
   updateComment,
   deleteComment,
-} from "../controllers/commentController.js";
+} from "../controllers/comment.controller.js";
 
 const router = express.Router();
 

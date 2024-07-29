@@ -1,5 +1,5 @@
 const userModel = (sequelize, DataTypes) => {
-  const User = sequelize.define("User", {
+  const User = sequelize.define("Users", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -25,12 +25,12 @@ const userModel = (sequelize, DataTypes) => {
 
   User.associate = function (models) {
     User.hasMany(models.Post, {
-      foreignKey: "userID",
+      foreignKey: "UserId",
       onDelete: 'CASCADE'
     });
 
     User.hasMany(models.Comment, {
-      foreignKey: "userID",
+      foreignKey: "UserId",
       onDelete: 'CASCADE'
     });
   };

@@ -3,18 +3,18 @@ const appendReplies = (comments) => {
   const roots = [];
 
   comments.forEach((comment) => {
-    map[comment.commentID] = {
+    map[comment.id] = {
       ...comment,
       replies: [],
     };
   });
 
   comments.forEach((comment) => {
-    if (comment.parentID == null) {
-      roots.push(map[comment.commentID]);
+    if (comment.ParentId == null) {
+      roots.push(map[comment.id]);
     } else {
-      if (map[comment.parentID]) {
-        map[comment.parentID].replies.push(map[comment.commentID]);
+      if (map[comment.ParentId]) {
+        map[comment.ParentId].replies.push(map[comment.id]);
       }
     }
   });

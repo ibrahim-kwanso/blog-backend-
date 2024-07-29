@@ -2,6 +2,7 @@ import db from "../models/index.js";
 import dotenv from "dotenv";
 import statusCodes from "../constants/statusCodes.js";
 import jwt from "jsonwebtoken";
+import { createUserService } from "../services/user.service.js";
 
 dotenv.config();
 
@@ -35,7 +36,8 @@ const signin = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
-    const user = await User.create(req.body);
+    const {username, email, password} = req.body;
+    const user = await createUserService(username, email, password);
     const token = jwt.sign(
       { id: user.id, email: user.email },
       SECRET_KEY
@@ -43,7 +45,7 @@ const signup = async (req, res) => {
 
     return res.status(statusCodes.SUCCESS).json(token);
   } catch (error) {
-    return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
+    return res.status(error.statusCode).json({ error: error.message });
   }
 };
 

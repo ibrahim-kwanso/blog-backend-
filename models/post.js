@@ -1,5 +1,5 @@
 const postModel = (sequelize, DataTypes) => {
-  const Post = sequelize.define("Post", {
+  const Post = sequelize.define("Posts", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -13,7 +13,7 @@ const postModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    userID: {
+    UserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -25,12 +25,12 @@ const postModel = (sequelize, DataTypes) => {
 
   Post.associate = (models) => {
     Post.belongsTo(models.User, {
-      foreignKey: "userID",
+      foreignKey: "UserId",
       onDelete: 'CASCADE'
     });
 
     Post.hasMany(models.Comment, {
-      foreignKey: "postID",
+      foreignKey: "PostId",
       onDelete: 'CASCADE'
     });
   };

@@ -1,5 +1,5 @@
 const commentModel = (sequelize, DataTypes) => {
-  const Comment = sequelize.define("Comment", {
+  const Comment = sequelize.define("Comments", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -9,7 +9,7 @@ const commentModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    userID: {
+    UserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -17,7 +17,7 @@ const commentModel = (sequelize, DataTypes) => {
         key: "id",
       },
     },
-    postID: {
+    PostId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -25,7 +25,7 @@ const commentModel = (sequelize, DataTypes) => {
         key: "id",
       },
     },
-    parentID: {
+    ParentId: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
@@ -37,25 +37,24 @@ const commentModel = (sequelize, DataTypes) => {
 
   Comment.associate = (models) => {
     Comment.belongsTo(models.User, {
-      foreignKey: "userID",
+      foreignKey: "UserId",
       onDelete: 'CASCADE'
     });
 
     Comment.belongsTo(models.Post, {
-      foreignKey: "postID",
+      foreignKey: "PostId",
       onDelete: 'CASCADE'
     });
 
     Comment.belongsTo(models.Comment, {
       as: "parentComment",
-      foreignKey: "parentID",
+      foreignKey: "ParentId",
       onDelete: 'CASCADE'
     });
 
     Comment.hasMany(models.Comment, {
       as: "replies",
-      foreignKey: "parentID",
-      onDelete: 'CASCADE'
+      foreignKey: "ParentId"
     });
   };
 

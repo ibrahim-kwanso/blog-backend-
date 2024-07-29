@@ -5,7 +5,7 @@ import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-import { authenticateToken } from "./middlewares/authMiddleware.js";
+import { authenticateToken } from "./middlewares/auth.middleware.js";
 import db from "./models/index.js";
 
 const app = express();

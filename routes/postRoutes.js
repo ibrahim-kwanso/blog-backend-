@@ -6,7 +6,7 @@ import {
   getCommentsByPost,
   updatePost,
   deletePost,
-} from "../controllers/postController.js";
+} from "../controllers/post.controller.js";
 const router = express.Router();
 
 router.post("/create", createPost);
