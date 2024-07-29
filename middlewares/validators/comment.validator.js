@@ -8,12 +8,12 @@ const commentCreationValidationRules = [
 ]
 
 const commentUpdateValidationRules = [
-    body("id").isInt().withMessage("id is not valid"),
+    param("id").isInt().withMessage("id is not valid"),
     body("content").notEmpty().withMessage("content cannot be empty")
 ]
 
 const commentDeleteValidationRules = [
-    body("id").isInt().withMessage("id is not valid")
+    param("id").isInt().withMessage("id is not valid")
 ]
 
 export {commentCreationValidationRules, commentUpdateValidationRules, commentDeleteValidationRules}

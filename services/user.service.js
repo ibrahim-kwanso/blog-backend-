@@ -1,8 +1,6 @@
-import db from "../models/index.js";
+import User from "../models/user.js"
 import statusCodes from "../constants/statusCodes.js";
 import ApiError from "../utils/apiError.js";
-
-const { User, Post, Comment } = db;
 
 const createUserService = async (username, email, password) => {
   try {

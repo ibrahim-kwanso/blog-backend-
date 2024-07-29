@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 import statusCodes from "../../constants/statusCodes.js";
 
 const signupValidationRules = [
@@ -15,7 +15,7 @@ const siginValidationRules = [
 ];
 
 const userUpdateValidationRules = [
-  body("id").isInt().withMessage("id is not valid"),
+  param("id").isInt().withMessage("id is not valid"),
   body("username").optional().notEmpty().withMessage("Username is required"),
   body("email").optional().isEmail().withMessage("Email is required"),
   body("password").optional()
@@ -24,7 +24,7 @@ const userUpdateValidationRules = [
 ];
 
 const userDeleteValidationRules = [
-    body("id").isInt().withMessage("id is not valid")
+    param("id").isInt().withMessage("id is not valid")
 ]
 
 export { signupValidationRules, siginValidationRules, userUpdateValidationRules, userDeleteValidationRules };

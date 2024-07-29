@@ -1,9 +1,7 @@
-import db from "../models/index.js";
+import Comment from "../models/comment.js";
 import statusCodes from "../constants/statusCodes.js";
 import ApiError from "../utils/apiError.js";
 import { appendReplies } from "../utils/index.js";
-
-const { Comment } = db;
 
 const createCommentService = async (UserId, PostId, content, ParentId) => {
   try {

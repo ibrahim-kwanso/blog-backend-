@@ -6,7 +6,7 @@ import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import { authenticateToken } from "./middlewares/auth.middleware.js";
-import db from "./models/index.js";
+import sequelize from './sequelize/config.js';
 
 const app = express();
 dotenv.config();
@@ -26,7 +26,7 @@ app.get("/", (req, res)=>{
 
 const dbSync = async () => {
   try {
-    await db.sequelize.sync();
+    await sequelize.sync();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

@@ -1,10 +1,10 @@
-import db from "../models/index.js";
+import Post from "../models/post.js";
+import Comment from "../models/comment.js";
 import statusCodes from "../constants/statusCodes.js";
 import { Op } from "sequelize";
 import { appendReplies } from "../utils/index.js";
 import ApiError from "../utils/apiError.js";
 
-const { Post, Comment } = db;
 
 const createPostService = async (UserId, title, content) => {
   try {
