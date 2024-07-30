@@ -1,4 +1,4 @@
-import db from "../models/index.js";
+import User from "../models/user.js";
 import dotenv from "dotenv";
 import statusCodes from "../constants/statusCodes.js";
 import jwt from "jsonwebtoken";
@@ -6,8 +6,6 @@ import { createUserService } from "../services/user.service.js";
 import bcrypt from "bcrypt";
 
 dotenv.config();
-
-const { User } = db;
 const SECRET_KEY = process.env.SECRET_KEY || "VerySecret";
 
 const signin = async (req, res) => {

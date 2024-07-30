@@ -23,6 +23,10 @@ const User = sequelize.define("Users", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+}, {
+  defaultScope: {
+    attributes: { exclude: ['password'] },
+  }
 });
 
 User.associate = function (models) {
