@@ -1,10 +1,12 @@
 import User from "../models/user.js"
 import statusCodes from "../constants/statusCodes.js";
 import ApiError from "../utils/apiError.js";
+import bcrypt from "bcrypt";
 
 const createUserService = async (username, email, password) => {
   try {
-    const user = await User.create({ username, email, password });
+    const hashedPassword = await bcrypt.hash(password, 3);
+    const user = await User.create({ username, email, password: hashedPassword });
     return user;
   } catch (error) {
     throw new ApiError(error.message, statusCodes.BAD_REQUEST);
@@ -38,6 +40,9 @@ const getAllUsersService = async () => {
 
 const updateUserService = async (id, updateData) => {
   try {
+    if(updateData[password]){
+      updateData[password] = await bcrypt.hash(password, 3);
+    }
     const [updated] = await User.update(updateData, {
       where: {
         id: id,

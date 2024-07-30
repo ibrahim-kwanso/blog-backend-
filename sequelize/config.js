@@ -1,7 +1,7 @@
 "use strict";
 import dotenv from 'dotenv';
 import pg from "pg"
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize } from "sequelize";
 import configFile from "../config/config.js";
 
 const env = process.env.NODE_ENV || "development";
