@@ -19,7 +19,7 @@ router.post("/create", createUser);
 router.get("/:id/posts", getPostByUser);
 router.get("/:id", getUser);
 router.get("/", getAllUser);
-router.put("/:id", userUpdateValidationRules, validate, updateUser);
-router.delete("/:id", userDeleteValidationRules, validate, deleteUser);
+router.put("/:id", validate(userUpdateValidationRules), updateUser);
+router.delete("/:id", validate(userDeleteValidationRules), deleteUser);
 
 export default router;

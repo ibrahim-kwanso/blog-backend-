@@ -7,7 +7,7 @@ import {
 import { validate } from "../utils/validations.js";
 const router = express.Router();
 
-router.post("/signin", siginValidationRules, validate, signin);
-router.post("/signup", signupValidationRules, validate, signup);
+router.post("/signin", validate(siginValidationRules), signin);
+router.post("/signup", validate(signupValidationRules), signup);
 
 export default router;

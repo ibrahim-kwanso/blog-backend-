@@ -15,10 +15,10 @@ import { validate } from "../utils/validations.js";
 
 const router = express.Router();
 
-router.post("/create", commentCreationValidationRules, validate, createComment);
+router.post("/create", validate(commentCreationValidationRules), createComment);
 router.get("/:id", getComment);
 router.get("/", getAllComments);
-router.put("/:id", commentUpdateValidationRules, validate, updateComment);
-router.delete("/:id", commentDeleteValidationRules, validate, deleteComment);
+router.put("/:id", validate(commentUpdateValidationRules), updateComment);
+router.delete("/:id", validate(commentDeleteValidationRules), deleteComment);
 
 export default router;

@@ -15,11 +15,11 @@ import {
 import { validate } from "../utils/validations.js";
 const router = express.Router();
 
-router.post("/create", postCreationValidationRules, validate, createPost);
+router.post("/create", validate(postCreationValidationRules), createPost);
 router.get("/:id", getPost);
 router.get("/", getAllPosts);
 router.get("/:id/comments", getCommentsByPost);
-router.put("/:id", postUpdateValidationRules, validate, updatePost);
-router.delete("/:id", postDeleteValidationRules, validate, deletePost);
+router.put("/:id", validate(postUpdateValidationRules), updatePost);
+router.delete("/:id", validate(postDeleteValidationRules), deletePost);
 
 export default router;
