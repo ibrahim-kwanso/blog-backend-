@@ -7,8 +7,8 @@ const createCommentService = async (UserId, PostId, content, ParentId) => {
   try {
     
     if(!ParentId) return await Comment.create({ UserId, PostId, content, ParentId });
-    
-    const parentComment = Comment.findByPk(ParentId); 
+
+    const parentComment = await Comment.findByPk(ParentId);
     if (parentComment && parentComment.PostId == PostId)
       return await Comment.create({ UserId, PostId, content, ParentId });
 
