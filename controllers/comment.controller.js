@@ -1,4 +1,4 @@
-import statusCodes from "../constants/statusCodes.js";
+import {StatusCodes as statusCodes} from "http-status-codes";
 import {
   createCommentService,
   deleteCommentService,
@@ -20,7 +20,7 @@ const createComment = async (req, res) => {
 const getComment = async (req, res) => {
   try {
     const comment = await getCommentService(req.params.id);
-    return res.status(statusCodes.SUCCESS).json(comment);
+    return res.status(statusCodes.OK).json(comment);
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }
@@ -29,7 +29,7 @@ const getComment = async (req, res) => {
 const getAllComments = async (req, res) => {
   try {
     const comments = await getAllCommentsService();
-    return res.status(statusCodes.SUCCESS).json(comments);
+    return res.status(statusCodes.OK).json(comments);
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }
@@ -38,7 +38,7 @@ const getAllComments = async (req, res) => {
 const updateComment = async (req, res) => {
   try {
     const updated = await updateCommentService(req.params.id, req.body.content);
-    return res.status(statusCodes.SUCCESS).json(updated);
+    return res.status(statusCodes.OK).json(updated);
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }
@@ -48,8 +48,8 @@ const deleteComment = async (req, res) => {
   try {
     const deletedComment = deleteCommentService(req.params.id);
     return res
-      .status(statusCodes.SUCCESS)
-      .json({ message: "Comment Deleted Successfully" });
+      .status(statusCodes.OK)
+      .json({ message: "Comment Deleted OKfully" });
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }

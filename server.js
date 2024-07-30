@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import {PORT} from "./settings.js";
 import express from "express";
 import bodyParser from "body-parser";
 import userRoutes from "./routes/userRoutes.js";
@@ -9,9 +9,6 @@ import { authenticateToken } from "./middlewares/auth.middleware.js";
 import sequelize from './sequelize/config.js';
 
 const app = express();
-dotenv.config();
-
-const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 

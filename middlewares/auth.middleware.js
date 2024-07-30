@@ -1,10 +1,8 @@
-import dotenv from "dotenv";
-import statusCodes from "../constants/statusCodes.js";
+import { JWT_SECRET } from "../settings.js";
+import {StatusCodes as statusCodes} from "http-status-codes";
 import jwt from "jsonwebtoken";
 
-dotenv.config()
-
-const SECRET_KEY = process.env.JWT_SECRET || "VerySecret";
+const SECRET_KEY = JWT_SECRET;
 
 const authenticateToken = (req, res, next) => {
   const header = req.headers["authorization"];

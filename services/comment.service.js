@@ -1,5 +1,5 @@
 import Comment from "../models/comment.js";
-import statusCodes from "../constants/statusCodes.js";
+import {StatusCodes as statusCodes} from "http-status-codes";
 import ApiError from "../utils/apiError.js";
 import { appendReplies } from "../utils/index.js";
 

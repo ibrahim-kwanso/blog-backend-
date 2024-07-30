@@ -1,5 +1,4 @@
 import { body, param, validationResult } from "express-validator";
-import statusCodes from "../../constants/statusCodes.js";
 
 const signupValidationRules = [
   body("username").notEmpty().withMessage("Username is required"),

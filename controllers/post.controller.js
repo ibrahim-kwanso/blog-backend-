@@ -1,4 +1,4 @@
-import statusCodes from "../constants/statusCodes.js";
+import {StatusCodes as statusCodes} from "http-status-codes";
 import { applyPagination } from "../utils/index.js";
 import {
   createPostService,
@@ -29,7 +29,7 @@ const getAllPosts = async (req, res) => {
     const [totalItems, posts] = await getAllPostsSerivce(page, pageSize, title);
 
     return res
-      .status(statusCodes.SUCCESS)
+      .status(statusCodes.OK)
       .json(applyPagination(req, posts, page, pageSize, totalItems));
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
@@ -44,7 +44,7 @@ const getCommentsByPost = async (req, res) => {
       page,
       pageSize
     );
-    return res.status(statusCodes.SUCCESS).json(comments);
+    return res.status(statusCodes.OK).json(comments);
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
@@ -53,7 +53,7 @@ const getCommentsByPost = async (req, res) => {
 const getPost = async (req, res) => {
   try {
     const post = await getPostService(req.params.id);
-    return res.status(statusCodes.SUCCESS).json(post);
+    return res.status(statusCodes.OK).json(post);
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }
@@ -67,7 +67,7 @@ const updatePost = async (req, res) => {
     if (content) updateData.content = content;
 
     const updated = await updatePostService(req.params.id, updateData);
-    return res.status(statusCodes.SUCCESS).json(updated);
+    return res.status(statusCodes.OK).json(updated);
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }
@@ -78,8 +78,8 @@ const deletePost = async (req, res) => {
     const deletedPost = await deletedPostService(req.params.id);
 
     return res
-      .status(statusCodes.SUCCESS)
-      .json({ message: "Post Deleted Successfully" });
+      .status(statusCodes.OK)
+      .json({ message: "Post Deleted OKfully" });
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
   }

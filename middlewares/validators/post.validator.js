@@ -1,4 +1,4 @@
-import { body, param, validationResult } from "express-validator";
+import { body, param } from "express-validator";
 
 const postCreationValidationRules = [
   body("title").notEmpty().withMessage("Title is required"),

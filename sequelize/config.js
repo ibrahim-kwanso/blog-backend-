@@ -1,18 +1,16 @@
 "use strict";
-import dotenv from 'dotenv';
+import { NODE_ENV, POSTGRES_URL} from "../settings.js";
 import pg from "pg"
 import { Sequelize } from "sequelize";
 import configFile from "../config/config.js";
 
-const env = process.env.NODE_ENV || "development";
-
+const env = NODE_ENV || "development";
 const config = configFile[env];
-dotenv.config();
 
 let sequelize;
 
 if (env == "production") {
-  sequelize = new Sequelize(process.env.POSTGRES_URL, {
+  sequelize = new Sequelize(POSTGRES_URL, {
     dialect: config.dialect,
     dialectModule: pg,
   });

@@ -1,26 +1,36 @@
-import dotenv from "dotenv";
-dotenv.config()
+import {
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DATABASE,
+  POSTGRES_HOST,
+  DB_DIALECT,
+  DB_USERNAME,
+  DB_PASSWORD,
+  DB_DEV_NAME,
+  DB_HOST,
+  DB_TEST_NAME,
+} from "../settings.js";
 
-export default  {
-  "production": {
-    "username": process.env.POSTGRES_USER,
-    "password": process.env.POSTGRES_PASSWORD,
-    "database": process.env.POSTGRES_DATABASE,
-    "host": process.env.POSTGRES_HOST,
-    "dialect": process.env.DB_DIALECT
+export default {
+  production: {
+    username: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DATABASE,
+    host: POSTGRES_HOST,
+    dialect: DB_DIALECT,
   },
-  "development": {
-    "username": process.env.DB_USERNAME,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_DEV_NAME,
-    "host": process.env.DB_HOST,
-    "dialect": process.env.DB_DIALECT
+  development: {
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
+    database: DB_DEV_NAME,
+    host: DB_HOST,
+    dialect: DB_DIALECT,
   },
-  "test": {
-    "username": process.env.DB_USERNAME,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_TEST_NAME,
-    "host": process.env.DB_HOST,
-    "dialect": process.env.DB_DIALECT
-  }
-}
+  test: {
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
+    database: DB_TEST_NAME,
+    host: DB_HOST,
+    dialect: DB_DIALECT,
+  },
+};

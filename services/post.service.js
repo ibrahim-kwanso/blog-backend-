@@ -1,6 +1,6 @@
 import Post from "../models/post.js";
 import Comment from "../models/comment.js";
-import statusCodes from "../constants/statusCodes.js";
+import {StatusCodes as statusCodes} from "http-status-codes";
 import { Op } from "sequelize";
 import { appendReplies } from "../utils/index.js";
 import ApiError from "../utils/apiError.js";

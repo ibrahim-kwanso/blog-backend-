@@ -1,4 +1,4 @@
-import statusCodes from "../constants/statusCodes.js";
+import {StatusCodes as statusCodes} from "http-status-codes";
 import { applyPagination } from "../utils/index.js";
 import {
   createUserService,
@@ -26,7 +26,7 @@ const getPostByUser = async (req, res) => {
     const [totalItems, posts] = await getPostsByUserService(req.params.id, page, pageSize);
 
     return res
-      .status(statusCodes.SUCCESS)
+      .status(statusCodes.OK)
       .json(applyPagination(req, posts, page, pageSize, totalItems));
   } catch (error) {
     return res.status(statusCodes.BAD_REQUEST).json({ error: error.message });
@@ -36,7 +36,7 @@ const getPostByUser = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const user = await getUserService(req.params.id);
-    return res.status(statusCodes.SUCCESS).json(user);
+    return res.status(statusCodes.OK).json(user);
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }
@@ -45,7 +45,7 @@ const getUser = async (req, res) => {
 const getAllUser = async (req, res) => {
   try {
     const allUsers = await getAllUsersService();
-    return res.status(statusCodes.SUCCESS).json(allUsers);
+    return res.status(statusCodes.OK).json(allUsers);
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }
@@ -61,7 +61,7 @@ const updateUser = async (req, res) => {
 
     const updatedUser = await updateUserService(req.params.id, updateData);
 
-    return res.status(statusCodes.SUCCESS).json(updatedUser);
+    return res.status(statusCodes.OK).json(updatedUser);
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }
@@ -71,8 +71,8 @@ const deleteUser = async (req, res) => {
   try {
     const deletedUser = await deleteUserService(req.params.id);
     return res
-      .status(statusCodes.SUCCESS)
-      .json({ message: "User Deleted Successfully" });
+      .status(statusCodes.OK)
+      .json({ message: "User Deleted OKfully" });
   } catch (error) {
     return res.status(error.statusCode).json({ error: error.message });
   }
