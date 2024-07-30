@@ -13,7 +13,7 @@ const authenticateToken = (req, res, next) => {
   if (!token) {
     return res
       .status(statusCodes.BAD_REQUEST)
-      .json({ error: "Token not in header" });
+      .json({ error: "Token not provided" });
   }
 
   jwt.verify(token, SECRET_KEY, (err, user) => {
