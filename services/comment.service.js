@@ -5,9 +5,19 @@ import { appendReplies } from "../utils/index.js";
 
 const createCommentService = async (UserId, PostId, content, ParentId) => {
   try {
-    const comment = await Comment.create({ UserId, PostId, content, ParentId });
-    return comment;
+    
+    if(!ParentId) return await Comment.create({ UserId, PostId, content, ParentId });
+    
+    const parentComment = Comment.findByPk(ParentId); 
+    if (parentComment && parentComment.PostId == PostId)
+      return await Comment.create({ UserId, PostId, content, ParentId });
+
+    throw new ApiError(
+      `Could not find parent comment (id:${ParentId})`,
+      statusCodes.NOT_FOUND
+    );
   } catch (error) {
+    if (error instanceof ApiError) throw error;
     throw new ApiError(error.message, statusCodes.BAD_REQUEST);
   }
 };
@@ -67,8 +77,7 @@ const deleteCommentService = async (id) => {
       },
     });
 
-    if (deletedComment)
-      return deletedComment;
+    if (deletedComment) return deletedComment;
 
     throw new ApiError("Comment Not Found", statusCodes.NOT_FOUND);
   } catch (error) {
@@ -100,5 +109,5 @@ export {
   getAllCommentsService,
   updateCommentService,
   deleteCommentService,
-  getCommentsByPostService
+  getCommentsByPostService,
 };
