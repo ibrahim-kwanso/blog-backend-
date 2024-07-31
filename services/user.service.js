@@ -74,7 +74,7 @@ const deleteUserService = async (id) => {
   }
 };
 
-const signupService = async (email, password) => {
+const signinService = async (email, password) => {
   try {
     const user = await User.scope("withPassword").findOne({
       where: {
@@ -104,5 +104,5 @@ export {
   getAllUsersService,
   updateUserService,
   deleteUserService,
-  signupService,
+  signinService,
 };
